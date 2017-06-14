@@ -7,37 +7,20 @@ var geocodeAPI = "35e5548c618555b1a43eb4759d26b260";
 // Helper Functions (in this case the only one is runQuery)
 var helpers = {
 
-  runQuery: function(location) {
-
-    console.log(location);
-
-    // Figure out the geolocation
-    var queryURL = "http://api.opencagedata.com/geocode/v1/json?query=" + location + "&pretty=1&key=" + geocodeAPI;
-
-    return axios.get(queryURL).then(function(response) {
-
-      console.log(response);
-      return response.data.results[0].formatted;
-    }).catch(function(err)
-    {
-      console.log(err);
-    });
-
+  getArticles: function()
+  {
+    console.log("getting articles")
+    return axios.get("/api/saved");
   },
 
-  saveSearch: function(searchInfo)
+  saveArticle: function(article)
   {
-    console.log("search info is: " + JSON.stringify(searchInfo));
-    return axios.post("/search", searchInfo);
-    // $.post("/search", searchInfo, function(err, data)
-    // {
-    //   return data;
-    // })
+    return axios.post("/api/saved", article);
   },
 
-  getSearches: function()
+  deleteArticle: function(articleID)
   {
-    return axios.get("/search");
+    return axios.delete("/api/saved/"+ articleID)
   }
 
 };
