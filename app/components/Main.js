@@ -2,20 +2,25 @@
 var React = require("react");
 
 // Here we include all of the sub-components
+
+
 var Form = require("./children/Form");
 var Results = require("./children/Results");
 
 // Helper Function
 var helpers = require("./utils/helpers.js");
-
+var Article = require("./Article.js");
 // This is the main component.
 var Main = React.createClass({
 
+  //3 states to save in main component: the search term for articles, the list of results, and the list of saved articles. 
+
   // Here we set a generic state associated with the number of clicks
   getInitialState: function() {
-    return { searchTerm: "", results: "", history: [] };
+    return { searchTerm: "", results: [], saved: [] };
   },
 
+  //componentDidMount will run when the components load. This code will be run to get saved articles. 
   componentDidMount: function() 
   {
     //first time the component rendered
@@ -27,42 +32,43 @@ var Main = React.createClass({
       }
     }.bind(this));
   },
+
   // If the component updates we'll run this code
-  componentDidUpdate: function(prevProps, prevState) {
+  // componentDidUpdate: function(prevProps, prevState) {
 
-    if (prevState.searchTerm !== this.state.searchTerm) {
-      console.log("UPDATED");
+  //   if (prevState.searchTerm !== this.state.searchTerm) {
+  //     console.log("UPDATED");
 
-      helpers.runQuery(this.state.searchTerm).then(function(data) {
-        if (data !== this.state.results) {
-          console.log("HERE");
-          console.log(data);
+  //     helpers.runQuery(this.state.searchTerm).then(function(data) {
+  //       if (data !== this.state.results) {
+  //         console.log("HERE");
+  //         console.log(data);
 
-          this.setState({ results: data });
-        }
-        // This code is necessary to bind the keyword "this" when we say this.setState
-        // to actually mean the component itself and not the runQuery function.
-      }.bind(this));
+  //         this.setState({ results: data });
+  //       }
+  //       // This code is necessary to bind the keyword "this" when we say this.setState
+  //       // to actually mean the component itself and not the runQuery function.
+  //     }.bind(this));
 
-        //hoping to attach to the event that runs query for search. 
-      helpers.saveSearch({"search": this.state.searchTerm, "date": Date.now()}).then(function(data)
-      {
-        console.log("Search Saved");
-        console.log(JSON.stringify(data, null, 2));
+  //       //hoping to attach to the event that runs query for search. 
+  //     helpers.saveSearch({"search": this.state.searchTerm, "date": Date.now()}).then(function(data)
+  //     {
+  //       console.log("Search Saved");
+  //       console.log(JSON.stringify(data, null, 2));
 
-        helpers.getHistory().then(function(data)
-        {
-          this.setState({history: data.data});
-        }.bind(this));
-      }.bind(this));
+  //       helpers.getHistory().then(function(data)
+  //       {
+  //         this.setState({history: data.data});
+  //       }.bind(this));
+  //     }.bind(this));
 
       
-    }
-  },
+  //   }
+  // },
   // We use this function to allow children to update the parent with searchTerms.
-  setTerm: function(term) {
-    this.setState({ searchTerm: term });
-  },
+  // setTerm: function(term) {
+  //   this.setState({ searchTerm: term });
+  // },
 
   // Here we describe this component's render method
   render: function() {
@@ -72,9 +78,9 @@ var Main = React.createClass({
         <div className="row">
 
           <div className="jumbotron">
-            <h2 className="text-center">Address Finder!</h2>
+            <h2 className="text-center">NYT Search!</h2>
             <p className="text-center">
-              <em>Enter a landmark to search for its exact address (ex: "Eiffel Tower").</em>
+              <em>Search for a topic on the New York Times</em>
             </p>
           </div>
 
@@ -86,12 +92,12 @@ var Main = React.createClass({
 
           <div className="col-md-6">
 
-            <Results address={this.state.results} />
+            
 
           </div>
 
           <div className = "row">
-            <History history={this.state.history} />
+            
           </div>
 
         </div>

@@ -1,0 +1,37 @@
+{
+  "name": "nyt-react",
+  "version": "1.0.0",
+  "description": "A react app that takes and saves articles from NYT",
+  "main": "server.js",
+  "dependencies": {
+    "axios": "^0.16.2",
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "morgan": "^1.8.2",
+    "mongoose": "^4.10.5",
+    "react-dom": "^15.5.4",
+    "request": "^2.81.0",
+    "react": "^15.5.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robin-mi89/NYTReact.git"
+  },
+  "keywords": [
+    "New",
+    "York",
+    "Times",
+    "React"
+  ],
+  "author": "Robin Mi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/robin-mi89/NYTReact/issues"
+  },
+  "homepage": "https://github.com/robin-mi89/NYTReact#readme"
+}

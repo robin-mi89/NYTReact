@@ -2,6 +2,7 @@
 // api-routes.js - this file offers a set of routes for displaying and saving data to the db
 // *********************************************************************************
 var Article = require("../models/Article.js");
+var Secrets = require("../configs/secrets.js");
 
 // Routes
 // =============================================================
@@ -59,5 +60,21 @@ module.exports = function(app, db)
             res.json(data);
             }
         });
+    })
+
+    app.get("/api/search", function(req, res)
+    {
+        request.get({
+        url: "https://api.nytimes.com/svc/search/v2/articlesearch.json",
+        qs: {
+            'api-key': Secrets.nyt_key,
+            'q': "trump",
+            'begin_date': "20170101",
+            'end_date': "20170509"
+        },
+        }, function(err, response, body) {
+        body = JSON.parse(body);
+        console.log(body);
+        })
     })
 };

@@ -23,6 +23,7 @@ var helpers = {
     return axios.delete("/api/saved/"+ articleID)
   }
 
+  
 };
 
 // We export the helpers function (which contains getGithubInfo)

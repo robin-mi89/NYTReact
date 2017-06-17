@@ -45,6 +45,7 @@ db.once("open", function()
 
 // Routes
 // ======
+require("./routes/html-routes.js")(app, db);
 require("./routes/api-routes.js")(app, db);
 
 //sets port variable to process.env.port if exists or 3000 if not. 

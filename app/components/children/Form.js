@@ -39,7 +39,7 @@ var Form = React.createClass({
           <form onSubmit={this.handleSubmit}>
             <div className="form-group">
               <h4 className="">
-                <strong>Location</strong>
+                <strong>Article Search</strong>
               </h4>
 
               {/*
@@ -53,6 +53,20 @@ var Form = React.createClass({
                 className="form-control text-center"
                 id="term"
                 onChange={this.handleChange}
+                required
+              />
+              <input
+                value="01-01-2000"
+                type="date"
+                className="form-control"
+                id="startdate"
+                required
+              />
+              <input
+                value="01-01-2000"
+                type="date"
+                className="form-control"
+                id="enddate"
                 required
               />
               <br />
