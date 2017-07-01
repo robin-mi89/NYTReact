@@ -2,7 +2,7 @@
 // api-routes.js - this file offers a set of routes for displaying and saving data to the db
 // *********************************************************************************
 var Article = require("../models/Article.js");
-var Secrets = require("../configs/secrets.js");
+var Secrets = (process.env) ? {configs: {nyt_key: process.env.nyt_key}} : require("../configs/secrets.js");
 var request = require("request");
 // Routes
 // =============================================================
@@ -69,7 +69,7 @@ module.exports = function(app, db)
         request.get({
         url: "https://api.nytimes.com/svc/search/v2/articlesearch.json",
         qs: {
-            'api-key': Secrets.config.nyt_key || process.env.nyt_key,
+            'api-key': Secrets.config.nyt_key,
             'q': req.body.q,
             //'begin_date': req.body.begin_date,
             //'end_date': req.body.end_date
