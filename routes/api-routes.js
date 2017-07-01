@@ -69,7 +69,7 @@ module.exports = function(app, db)
         request.get({
         url: "https://api.nytimes.com/svc/search/v2/articlesearch.json",
         qs: {
-            'api-key': Secrets.config.nyt_key,
+            'api-key': Secrets.config.nyt_key || process.env.nyt_key,
             'q': req.body.q,
             //'begin_date': req.body.begin_date,
             //'end_date': req.body.end_date
