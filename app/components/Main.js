@@ -17,58 +17,72 @@ var Main = React.createClass({
 
   // Here we set a generic state associated with the number of clicks
   getInitialState: function() {
-    return { searchTerm: "", results: [], saved: [] };
+    return { searchTerm: "", begin_date: 0, end_date: 0, results: [], saved: [] };
   },
 
   //componentDidMount will run when the components load. This code will be run to get saved articles. 
   componentDidMount: function() 
   {
     //first time the component rendered
-    helpers.getSearches().then(function(response)
+    //We get the saved articles, then set results array with the response data which should be a list of all articles. 
+    helpers.getArticles().then(function(response)
     {
       if(response !== this.state.history)
       {
-        this.setState({history: response.data});
+        this.setState({results: response.data});
       }
     }.bind(this));
   },
 
-  // If the component updates we'll run this code
-  // componentDidUpdate: function(prevProps, prevState) {
+  //If the component updates we'll run this code
+  componentDidUpdate: function(prevProps, prevState) {
 
-  //   if (prevState.searchTerm !== this.state.searchTerm) {
-  //     console.log("UPDATED");
+    if (prevState.searchTerm !== this.state.searchTerm) {
+      console.log("UPDATED");
+      console.log(this.state.searchTerm + " " + this.state.begin_date + " " + this.state.end_date);
 
-  //     helpers.runQuery(this.state.searchTerm).then(function(data) {
-  //       if (data !== this.state.results) {
-  //         console.log("HERE");
-  //         console.log(data);
+      helpers.runQuery({q: this.state.searchTerm, begin_date: this.state.begin_date, end_date: this.state.end_date}).then(function(data) {
+        if (data !== this.state.results) {
+          console.log("Running search");
+          console.log(data);
 
-  //         this.setState({ results: data });
-  //       }
-  //       // This code is necessary to bind the keyword "this" when we say this.setState
-  //       // to actually mean the component itself and not the runQuery function.
-  //     }.bind(this));
+          this.setState({ results: data.data });
+          console.log(JSON.stringify(this.state.results, null, 2));
+        }
+        else
+        {
+          console.log("data same as current result");
+          console.log(data);
+        }
+        // This code is necessary to bind the keyword "this" when we say this.setState
+        // to actually mean the component itself and not the runQuery function.
+      }.bind(this));
 
-  //       //hoping to attach to the event that runs query for search. 
-  //     helpers.saveSearch({"search": this.state.searchTerm, "date": Date.now()}).then(function(data)
-  //     {
-  //       console.log("Search Saved");
-  //       console.log(JSON.stringify(data, null, 2));
+        //hoping to attach to the event that runs query for search.
+        //this will save an article.  
+      // helpers.saveArticle(article).then(function(data)
+      // {
+      //   console.log("Search Saved");
+      //   console.log(JSON.stringify(data, null, 2));
 
-  //       helpers.getHistory().then(function(data)
-  //       {
-  //         this.setState({history: data.data});
-  //       }.bind(this));
-  //     }.bind(this));
+      //   helpers.getArticles().then(function(data)
+      //   {
+      //     this.setState({results: data.data});
+      //   }.bind(this));
+      // }.bind(this));
 
       
-  //   }
-  // },
-  // We use this function to allow children to update the parent with searchTerms.
-  // setTerm: function(term) {
-  //   this.setState({ searchTerm: term });
-  // },
+    }
+  },
+  //We use this function to allow children to update the parent with searchTerms.
+  setTerm: function(search) {
+    this.setState({ searchTerm: search.term, begin_date: search.begin, end_date: search.end });
+  },
+
+  saveArticle: function()
+  {
+
+  },
 
   // Here we describe this component's render method
   render: function() {
@@ -84,15 +98,15 @@ var Main = React.createClass({
             </p>
           </div>
 
-          <div className="col-md-6">
+          <div className="row">
 
             <Form setTerm={this.setTerm} />
 
           </div>
 
-          <div className="col-md-6">
+          <div className="row">
 
-            
+            <Results results={this.state.results}/>
 
           </div>
 

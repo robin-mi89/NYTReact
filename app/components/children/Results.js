@@ -12,8 +12,16 @@ var Results = React.createClass({
           <h3 className="panel-title text-center">Results</h3>
         </div>
         <div className="panel-body text-center">
-          <h1>Address:</h1>
-          <p>{this.props.address}</p>
+          <h1>articles:</h1>
+            {this.props.results.map(function(article, i){
+                return <div>
+                      <h3><a href={article.web_url}>{article.headline.print_headline}</a></h3>
+                      <p>{article.pub_date}</p>
+                      
+                      
+                      <hr/>
+                      </div>;
+            })}
         </div>
       </div>
     );

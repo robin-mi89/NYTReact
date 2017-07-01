@@ -3,7 +3,7 @@
 // *********************************************************************************
 var Article = require("../models/Article.js");
 var Secrets = require("../configs/secrets.js");
-
+var request = require("request");
 // Routes
 // =============================================================
 module.exports = function(app, db) 
@@ -62,19 +62,22 @@ module.exports = function(app, db)
         });
     })
 
-    app.get("/api/search", function(req, res)
+    app.post("/api/search", function(req, res)
     {
+        console.log(req.body);
+        
         request.get({
         url: "https://api.nytimes.com/svc/search/v2/articlesearch.json",
         qs: {
-            'api-key': Secrets.nyt_key,
-            'q': "trump",
-            'begin_date': "20170101",
-            'end_date': "20170509"
+            'api-key': Secrets.config.nyt_key,
+            'q': req.body.q,
+            //'begin_date': req.body.begin_date,
+            //'end_date': req.body.end_date
         },
         }, function(err, response, body) {
         body = JSON.parse(body);
-        console.log(body);
+        console.log(body.response.docs);
+        res.json(body.response.docs);
         })
     })
 };

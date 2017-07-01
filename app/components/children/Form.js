@@ -6,14 +6,23 @@ var Form = React.createClass({
 
   // Here we set a generic state associated with the text being searched for
   getInitialState: function() {
-    return { term: "" };
+    return { term: "" , begin: "2015/01/01", end: "2017/01/01"};
   },
 
   // This function will respond to the user input
-  handleChange: function(event) {
+  changeSearchTerm: function(event) {
 
     this.setState({ term: event.target.value });
 
+  },
+  //event handler for changes in begin date. 
+  changeBeginDate: function(event) {
+    this.setState({ begin: event.target.value });
+  },
+
+  //event handler for changes in end date.
+  changeEndDate: function(event) {
+    this.setState({end: event.target.value })
   },
 
   // When a user submits...
@@ -23,7 +32,9 @@ var Form = React.createClass({
     event.preventDefault();
 
     // Set the parent to have the search term
-    this.props.setTerm(this.state.term);
+    //Using the setTerm function passed by parent via props. 
+    this.props.setTerm({"term": this.state.term, "begin": this.state.begin, "end": this.state.end});
+    
     this.setState({ term: "" });
 
     
@@ -52,27 +63,30 @@ var Form = React.createClass({
                 type="text"
                 className="form-control text-center"
                 id="term"
-                onChange={this.handleChange}
+                onChange={this.changeSearchTerm}
                 required
               />
               <input
-                value="01-01-2000"
+                value={this.state.begin}
                 type="date"
                 className="form-control"
                 id="startdate"
+                onChange={this.changeBeginDate}
                 required
               />
               <input
-                value="01-01-2000"
+                value={this.state.end}
                 type="date"
                 className="form-control"
                 id="enddate"
+                onChange={this.changeEndDate}
                 required
               />
               <br />
               <button
                 className="btn btn-primary"
                 type="submit"
+                
               >
                 Submit
               </button>

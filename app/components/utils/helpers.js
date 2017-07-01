@@ -1,9 +1,6 @@
 // Include the axios package for performing HTTP requests (promise based alternative to request)
 var axios = require("axios");
 
-// Geocoder API
-var geocodeAPI = "35e5548c618555b1a43eb4759d26b260";
-
 // Helper Functions (in this case the only one is runQuery)
 var helpers = {
 
@@ -21,6 +18,12 @@ var helpers = {
   deleteArticle: function(articleID)
   {
     return axios.delete("/api/saved/"+ articleID)
+  },
+
+  runQuery: function(query)
+  {
+    console.log(query);
+    return axios.post("/api/search", query);
   }
 
   
