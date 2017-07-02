@@ -1,34 +1,32 @@
 // Include React
 var React = require("react");
-var ResultsArticles = require("./resultsChildren/ResultsArticles");
 
 // Creating the Results component
-var Results = React.createClass({
-  onItemClick: function(article, e) 
+var Saved = React.createClass({
+
+    onItemClick: function(article, e) 
   {
-    console.log(this.props)
-    this.props.saveArticle(article)
+    this.props.deleteArticle(article._id)
   },
 
   // Here we describe this component's render method
   render: function() {
+      console.log(this.props);
     return (
       <div className="panel panel-default">
         <div className="panel-heading">
-          <h3 className="panel-title text-center">Results</h3>
+          <h3 className="panel-title text-center">Saved Articles</h3>
         </div>
         <div className="panel-body text-center">
-          <h1>articles:</h1>
-            {this.props.results.map(function(data, i){
-              let article = {"title": data.headline.print_headline, url: data.web_url, date: data.pub_date}
+          {this.props.saved.map(function(article, i){
               let boundItemClick = this.onItemClick.bind(this, article);
-                return <div>
-                      <h3><a href={data.web_url}>{data.headline.print_headline}</a></h3>
-                      <p>{data.pub_date}</p>
+                return <div key = {article.id}>
+                      <h3><a href={article.url}>{article.title}</a></h3>
+                      <p>{article.date}</p>
                       <button className = "btn btn-primary" 
                       onClick={boundItemClick}
                       >
-                      Save</button>
+                      Delete</button>
                       <hr/>
                       </div>;
             }.bind(this))}
@@ -39,4 +37,4 @@ var Results = React.createClass({
 });
 
 // Export the component back for use in other files
-module.exports = Results;
+module.exports = Saved;

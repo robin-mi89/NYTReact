@@ -6,6 +6,7 @@ var React = require("react");
 
 var Form = require("./children/Form");
 var Results = require("./children/Results");
+var Saved = require("./children/Saved");
 
 // Helper Function
 var helpers = require("./utils/helpers.js");
@@ -20,6 +21,12 @@ var Main = React.createClass({
     return { searchTerm: "", begin_date: 0, end_date: 0, results: [], saved: [] };
   },
 
+  //function to get saved articles
+  getSavedArticles: function()
+  {
+    
+  },
+
   //componentDidMount will run when the components load. This code will be run to get saved articles. 
   componentDidMount: function() 
   {
@@ -27,12 +34,16 @@ var Main = React.createClass({
     //We get the saved articles, then set results array with the response data which should be a list of all articles. 
     helpers.getArticles().then(function(response)
     {
-      if(response !== this.state.history)
+
+      if(response !== this.state.saved && response !== undefined)
       {
-        this.setState({results: response.data});
+        console.log(response);
+        this.setState({saved: response.data});
       }
     }.bind(this));
   },
+
+  
 
   //If the component updates we'll run this code
   componentDidUpdate: function(prevProps, prevState) {
@@ -74,14 +85,32 @@ var Main = React.createClass({
       
     }
   },
+
   //We use this function to allow children to update the parent with searchTerms.
   setTerm: function(search) {
     this.setState({ searchTerm: search.term, begin_date: search.begin, end_date: search.end });
   },
 
-  saveArticle: function()
+  saveArticle: function(article)
   {
+    helpers.saveArticle(article).then(function(data)
+    {
+      console.log(data);
+      this.setState({saved: this.state.saved.concat([article])})
+    }.bind(this))
+  },
 
+  deleteArticle: function(articleID)
+  {
+    helpers.deleteArticle(articleID).then(function(data)
+    {
+      let index = this.state.saved.indexOf(data);
+
+      var newSaved = this.state.saved.slice(); //copy array
+      newSaved.splice(index, 1); //remove element
+      this.setState({saved: newSaved}); //set state of saved as new array. 
+      
+    }.bind(this));
   },
 
   // Here we describe this component's render method
@@ -105,8 +134,12 @@ var Main = React.createClass({
           </div>
 
           <div className="row">
+            <Saved saved={this.state.saved} deleteArticle = {this.deleteArticle}/>
+          </div>
 
-            <Results results={this.state.results}/>
+          <div className="row">
+
+            <Results results={this.state.results} saveArticle = {this.saveArticle}/>
 
           </div>
 

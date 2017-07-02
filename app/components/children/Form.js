@@ -6,7 +6,7 @@ var Form = React.createClass({
 
   // Here we set a generic state associated with the text being searched for
   getInitialState: function() {
-    return { term: "" , begin: "2015/01/01", end: "2017/01/01"};
+    return { term: "" , begin: "2015-01-01", end: "2017-01-01"};
   },
 
   // This function will respond to the user input

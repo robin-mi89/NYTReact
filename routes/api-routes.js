@@ -6,6 +6,8 @@ if (!process.env)
 {
     var Secrets = require("../configs/secrets.js");
 }
+
+//var Secrets = require("../configs/secrets.js");
 var request = require("request");
 // Routes
 // =============================================================
@@ -49,9 +51,10 @@ module.exports = function(app, db)
         })
     });
 //  * `/api/saved` (delete) - your components will use this to delete a saved article in the database
-    app.delete("/api/saved", function(req, res)
+    app.delete("/api/saved/:_id", function(req, res)
     {
-        Article.remove({"_id": req.body._id}, function(err, data)
+        console.log("in delete removing ID: " + req.params._id)
+        Article.remove({"_id": req.params._id}, function(err, data)
         {
             if (err) 
             {
@@ -79,7 +82,7 @@ module.exports = function(app, db)
         },
         }, function(err, response, body) {
         body = JSON.parse(body);
-        console.log(body.response.docs);
+        //console.log(body.response.docs);
         res.json(body.response.docs);
         })
     })
